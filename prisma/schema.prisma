@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  techStack   String
+  demoUrl     String?
+  githubUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Work {
+  id          String   @id @default(cuid())
+  role        String
+  company     String
+  duration    String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  content   String
+  imageUrl  String?
+  rating    Int      @default(5)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Certificate {
+  id        String   @id @default(cuid())
+  title     String
+  issuer    String
+  date      String
+  imageUrl  String?
+  credUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id           String @id @default("main")
+  heroTitle    String @default("ABDUL AHAD")
+  heroSubtitle String @default("Web Developer | Frontend Engineer | Python Developer")
+  aboutText    String @default("")
+  cvUrl        String @default("")
+  email        String @default("abdulahadafridi@gmail.com")
+  phone        String @default("+92 312-8760904")
+  location     String @default("Pakistan")
+  githubUrl    String @default("https://github.com/AAhadAfridi")
+  linkedinUrl  String @default("https://linkedin.com/in/abdul-ahad-afridb74D303/")
+  twitterUrl   String @default("https://twitter.com/AAhadAfridi")
+  instagramUrl String @default("https://instagram.com/a.ahad_afridi")
+  whatsappUrl  String @default("https://wa.me/923128760904")
+}
+
+model ChatbotQA {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
