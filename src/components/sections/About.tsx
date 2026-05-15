@@ -3,7 +3,23 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
-export default function About() {
+interface AboutProps {
+  settings?: {
+    aboutText?: string;
+    phone?: string;
+    email?: string;
+    location?: string;
+  };
+}
+
+export default function About({ settings }: AboutProps) {
+  const aboutText = settings?.aboutText && settings.aboutText.length > 0
+    ? settings.aboutText
+    : "Web Developer | Frontend Engineer | Python Developer with experience building scalable web applications using React.js, Next.js, Node.js, and Python. Skilled in responsive design, microservices architecture, CMS development, and AI chatbot integration. Passionate about creating high-performance, production-ready solutions from concept to deployment.";
+  const phone = settings?.phone || "0312-8760904";
+  const email = settings?.email || "abdulahadafridi@gmail.com";
+  const location = settings?.location || "Pakistan";
+
   return (
     <section
       id="about"
@@ -52,22 +68,22 @@ export default function About() {
             Abdul Ahad <span className="text-cyan-400">Afridi</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg leading-relaxed text-gray-400 mb-6 max-w-2xl">
-            Web Developer | Frontend Engineer | Python Developer with experience building scalable web applications using React.js, Next.js, Node.js, and Python. Skilled in responsive design, microservices architecture, CMS development, and AI chatbot integration. Passionate about creating high-performance, production-ready solutions from concept to deployment.
+            {aboutText}
           </p>
 
           {/* Quick Info Cards */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
               <FaPhone className="text-cyan-400 text-sm flex-shrink-0" />
-              <span className="text-gray-400 text-xs sm:text-sm font-mono">0312-8760904</span>
+              <span className="text-gray-400 text-xs sm:text-sm font-mono">{phone}</span>
             </div>
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
               <FaEnvelope className="text-cyan-400 text-sm flex-shrink-0" />
-              <span className="text-gray-400 text-xs sm:text-sm font-mono">abdulahadafridi@gmail.com</span>
+              <span className="text-gray-400 text-xs sm:text-sm font-mono">{email}</span>
             </div>
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
               <FaMapMarkerAlt className="text-cyan-400 text-sm flex-shrink-0" />
-              <span className="text-gray-400 text-xs sm:text-sm font-mono">Pakistan</span>
+              <span className="text-gray-400 text-xs sm:text-sm font-mono">{location}</span>
             </div>
           </div>
         </motion.div>

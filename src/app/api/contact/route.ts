@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -8,6 +9,11 @@ export async function POST(request: Request) {
     if (!name || !email || !message) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
+
+    // Save to database
+    await prisma.contactMessage.create({
+      data: { name, email, message },
+    });
 
     // If Resend API key is configured, send email
     if (process.env.RESEND_API_KEY) {
@@ -31,12 +37,6 @@ export async function POST(request: Request) {
         `,
         replyTo: email,
       });
-    } else {
-      // Fallback: log to console
-      console.log("📧 New Contact Form Submission:");
-      console.log(`  Name: ${name}`);
-      console.log(`  Email: ${email}`);
-      console.log(`  Message: ${message}`);
     }
 
     return NextResponse.json({ success: true });

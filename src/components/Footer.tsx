@@ -1,6 +1,22 @@
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
-export default function Footer() {
+interface FooterProps {
+  settings?: {
+    githubUrl?: string;
+    linkedinUrl?: string;
+    twitterUrl?: string;
+    instagramUrl?: string;
+    whatsappUrl?: string;
+  };
+}
+
+export default function Footer({ settings }: FooterProps) {
+  const githubUrl = settings?.githubUrl || "https://github.com/AAhadAfridi";
+  const linkedinUrl = settings?.linkedinUrl || "https://linkedin.com/in/abdul-ahad-afridb74D303/";
+  const twitterUrl = settings?.twitterUrl || "https://twitter.com/AAhadAfridi";
+  const instagramUrl = settings?.instagramUrl || "https://instagram.com/a.ahad_afridi";
+  const whatsappUrl = settings?.whatsappUrl || "https://wa.me/923128760904";
+
   return (
     <footer className="relative z-10 border-t border-white/10 px-4 sm:px-8 lg:px-16 xl:px-24 py-8 sm:py-12">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8">
@@ -9,19 +25,19 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-4 sm:gap-6">
-          <a href="https://github.com/AAhadAfridi" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="GitHub">
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="GitHub">
             <FaGithub size={16} className="sm:w-[18px] sm:h-[18px]" />
           </a>
-          <a href="https://linkedin.com/in/abdul-ahad-afridb74D303/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="LinkedIn">
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="LinkedIn">
             <FaLinkedin size={16} className="sm:w-[18px] sm:h-[18px]" />
           </a>
-          <a href="https://twitter.com/AAhadAfridi" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Twitter">
+          <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Twitter">
             <FaTwitter size={16} className="sm:w-[18px] sm:h-[18px]" />
           </a>
-          <a href="https://instagram.com/a.ahad_afridi" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Instagram">
+          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="Instagram">
             <FaInstagram size={16} className="sm:w-[18px] sm:h-[18px]" />
           </a>
-          <a href="https://wa.me/923128760904" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-400 transition-colors" aria-label="WhatsApp">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-400 transition-colors" aria-label="WhatsApp">
             <FaWhatsapp size={16} className="sm:w-[18px] sm:h-[18px]" />
           </a>
         </div>

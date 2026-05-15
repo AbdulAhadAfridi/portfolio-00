@@ -7,28 +7,37 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
 import Testimonials from "@/components/sections/Testimonials";
-import { getProjects, getServices, getWorks, getTestimonials } from "./actions";
+import Reviews from "@/components/sections/Reviews";
+import {
+  getProjects, getServices, getTestimonials,
+  getSiteSettings, getApprovedReviews,
+} from "./actions";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const projects = await getProjects();
-  const services = await getServices();
-  const works = await getWorks();
-  const testimonials = await getTestimonials();
+  const [projects, services, testimonials, settings, approvedReviews] =
+    await Promise.all([
+      getProjects(),
+      getServices(),
+      getTestimonials(),
+      getSiteSettings(),
+      getApprovedReviews(),
+    ]);
 
   return (
     <ClientWrapper>
       <Navbar />
       <main className="flex flex-col w-full relative z-10">
-        <Hero />
-        <About />
-        <Services />
+        <Hero settings={settings} />
+        <About settings={settings} />
+        <Services dbServices={services} />
         <FeaturedProjects projects={projects} />
         <Testimonials testimonials={testimonials} />
-        <Contact />
+        <Reviews reviews={approvedReviews} />
+        <Contact settings={settings} />
       </main>
-      <Footer />
+      <Footer settings={settings} />
     </ClientWrapper>
   );
 }

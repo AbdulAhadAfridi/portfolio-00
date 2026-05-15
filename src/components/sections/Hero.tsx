@@ -5,9 +5,22 @@ import { useState } from "react";
 
 const SKILLS_TEXT = "NEXT.JS • NODE.JS • PYTHON • REACT • DOCKER • SQL • TYPESCRIPT • CLOUD • ";
 
-export default function Hero() {
+interface HeroProps {
+  settings?: {
+    heroTitle?: string;
+    heroSubtitle?: string;
+  };
+}
+
+export default function Hero({ settings }: HeroProps) {
   const [isHovered, setIsHovered] = useState(false);
   const characters = SKILLS_TEXT.split("");
+
+  const title = settings?.heroTitle || "ABDUL AHAD";
+  const subtitle = settings?.heroSubtitle || "Web Developer | Frontend Engineer | Python Developer";
+  const nameParts = title.split(" ");
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts.slice(1).join(" ") || "";
 
   return (
     <section
@@ -29,9 +42,9 @@ export default function Hero() {
           Hello! I&apos;m
         </span>
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] uppercase tracking-tight">
-          ABDUL
+          {firstName}
           <br />
-          AHAD
+          {lastName}
         </h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -39,7 +52,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-gray-500 text-xs sm:text-sm md:text-base mt-4 sm:mt-6 max-w-xs leading-relaxed"
         >
-          Web Developer | Frontend Engineer | Python Developer — crafting scalable digital experiences.
+          {subtitle} — crafting scalable digital experiences.
         </motion.p>
         {/* Mobile CTA */}
         <motion.div
@@ -121,7 +134,7 @@ export default function Hero() {
           >
             <Image
               src="/images/hero-avatar.png"
-              alt="Abdul Ahad Afridi - Developer"
+              alt={`${title} - Developer`}
               fill
               className="object-cover"
               priority

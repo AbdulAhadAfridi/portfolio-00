@@ -4,8 +4,27 @@ import { useState } from "react";
 import { Mail, MapPin, Send, Phone } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
-export default function Contact() {
+interface ContactProps {
+  settings?: {
+    email?: string;
+    phone?: string;
+    location?: string;
+    whatsappUrl?: string;
+    instagramUrl?: string;
+    linkedinUrl?: string;
+    twitterUrl?: string;
+  };
+}
+
+export default function Contact({ settings }: ContactProps) {
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const email = settings?.email || "abdulahadafridi@gmail.com";
+  const phone = settings?.phone || "+92 312-8760904";
+  const whatsappUrl = settings?.whatsappUrl || "https://wa.me/923128760904";
+  const instagramUrl = settings?.instagramUrl || "https://instagram.com/a.ahad_afridi";
+  const linkedinUrl = settings?.linkedinUrl || "https://linkedin.com/in/abdul-ahad-afridb74D303/";
+  const twitterUrl = settings?.twitterUrl || "https://twitter.com/AAhadAfridi";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +89,7 @@ export default function Contact() {
               </div>
               <div className="text-left">
                 <p className="text-white font-medium text-sm sm:text-base">Email</p>
-                <p className="text-xs sm:text-sm">abdulahadafridi@gmail.com</p>
+                <p className="text-xs sm:text-sm">{email}</p>
               </div>
             </div>
 
@@ -80,7 +99,7 @@ export default function Contact() {
               </div>
               <div className="text-left">
                 <p className="text-white font-medium text-sm sm:text-base">Phone / WhatsApp</p>
-                <p className="text-xs sm:text-sm">+92 312-8760904</p>
+                <p className="text-xs sm:text-sm">{phone}</p>
               </div>
             </div>
 
@@ -97,16 +116,16 @@ export default function Contact() {
 
           {/* Social links */}
           <div className="flex items-center gap-4 mt-8 justify-center lg:justify-start">
-            <a href="https://wa.me/923128760904" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/20 transition-colors">
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/20 transition-colors">
               <FaWhatsapp size={18} />
             </a>
-            <a href="https://instagram.com/a.ahad_afridi" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 hover:bg-pink-500/20 transition-colors">
+            <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 hover:bg-pink-500/20 transition-colors">
               <FaInstagram size={18} />
             </a>
-            <a href="https://linkedin.com/in/abdul-ahad-afridb74D303/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 hover:bg-blue-500/20 transition-colors">
+            <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 hover:bg-blue-500/20 transition-colors">
               <FaLinkedin size={18} />
             </a>
-            <a href="https://twitter.com/AAhadAfridi" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 hover:bg-sky-500/20 transition-colors">
+            <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 hover:bg-sky-500/20 transition-colors">
               <FaTwitter size={18} />
             </a>
           </div>
@@ -122,45 +141,18 @@ export default function Contact() {
         >
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
             <div className="flex flex-col gap-1.5 sm:gap-2">
-              <label htmlFor="name" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">
-                NAME
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                placeholder="Your name"
-                className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors text-sm sm:text-base"
-              />
+              <label htmlFor="name" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">NAME</label>
+              <input id="name" name="name" type="text" required placeholder="Your name" className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors text-sm sm:text-base" />
             </div>
 
             <div className="flex flex-col gap-1.5 sm:gap-2">
-              <label htmlFor="email" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">
-                EMAIL
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                placeholder="your@email.com"
-                className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors text-sm sm:text-base"
-              />
+              <label htmlFor="email" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">EMAIL</label>
+              <input id="email" name="email" type="email" required placeholder="your@email.com" className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors text-sm sm:text-base" />
             </div>
 
             <div className="flex flex-col gap-1.5 sm:gap-2">
-              <label htmlFor="message" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">
-                MESSAGE
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={4}
-                placeholder="Tell me about your project..."
-                className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors resize-none text-sm sm:text-base"
-              />
+              <label htmlFor="message" className="text-[10px] sm:text-sm text-gray-400 font-mono tracking-wider">MESSAGE</label>
+              <textarea id="message" name="message" required rows={4} placeholder="Tell me about your project..." className="bg-white/5 border border-white/10 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-gray-600 outline-none focus:border-cyan-500/50 transition-colors resize-none text-sm sm:text-base" />
             </div>
 
             <button

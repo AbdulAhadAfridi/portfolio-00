@@ -1,14 +1,12 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-
-const prisma = new PrismaClient();
 
 // ========================
 // Projects
 // ========================
 export async function getProjects() {
-  return await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.project.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addProject(data: FormData) {
@@ -20,7 +18,7 @@ export async function addProject(data: FormData) {
       imageUrl: (data.get("imageUrl") as string) || null,
       demoUrl: (data.get("demoUrl") as string) || null,
       githubUrl: (data.get("githubUrl") as string) || null,
-    }
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -37,7 +35,7 @@ export async function updateProject(id: string, data: FormData) {
       imageUrl: (data.get("imageUrl") as string) || null,
       demoUrl: (data.get("demoUrl") as string) || null,
       githubUrl: (data.get("githubUrl") as string) || null,
-    }
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -55,7 +53,7 @@ export async function deleteProject(id: string) {
 // Services
 // ========================
 export async function getServices() {
-  return await prisma.service.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.service.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addService(data: FormData) {
@@ -63,8 +61,21 @@ export async function addService(data: FormData) {
     data: {
       title: data.get("title") as string,
       description: data.get("description") as string,
-      icon: data.get("icon") as string | null,
-    }
+      icon: (data.get("icon") as string) || null,
+    },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+export async function updateService(id: string, data: FormData) {
+  await prisma.service.update({
+    where: { id },
+    data: {
+      title: data.get("title") as string,
+      description: data.get("description") as string,
+      icon: (data.get("icon") as string) || null,
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -80,7 +91,7 @@ export async function deleteService(id: string) {
 // Work Experience
 // ========================
 export async function getWorks() {
-  return await prisma.work.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.work.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addWork(data: FormData) {
@@ -90,7 +101,21 @@ export async function addWork(data: FormData) {
       company: data.get("company") as string,
       duration: data.get("duration") as string,
       description: data.get("description") as string,
-    }
+    },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+export async function updateWork(id: string, data: FormData) {
+  await prisma.work.update({
+    where: { id },
+    data: {
+      role: data.get("role") as string,
+      company: data.get("company") as string,
+      duration: data.get("duration") as string,
+      description: data.get("description") as string,
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -106,7 +131,7 @@ export async function deleteWork(id: string) {
 // Testimonials
 // ========================
 export async function getTestimonials() {
-  return await prisma.testimonial.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.testimonial.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addTestimonial(data: FormData) {
@@ -117,7 +142,22 @@ export async function addTestimonial(data: FormData) {
       content: data.get("content") as string,
       imageUrl: (data.get("imageUrl") as string) || null,
       rating: parseInt(data.get("rating") as string) || 5,
-    }
+    },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+export async function updateTestimonial(id: string, data: FormData) {
+  await prisma.testimonial.update({
+    where: { id },
+    data: {
+      name: data.get("name") as string,
+      role: data.get("role") as string,
+      content: data.get("content") as string,
+      imageUrl: (data.get("imageUrl") as string) || null,
+      rating: parseInt(data.get("rating") as string) || 5,
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -133,7 +173,7 @@ export async function deleteTestimonial(id: string) {
 // Certificates
 // ========================
 export async function getCertificates() {
-  return await prisma.certificate.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.certificate.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addCertificate(data: FormData) {
@@ -144,7 +184,23 @@ export async function addCertificate(data: FormData) {
       date: data.get("date") as string,
       imageUrl: (data.get("imageUrl") as string) || null,
       credUrl: (data.get("credUrl") as string) || null,
-    }
+    },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/about");
+}
+
+export async function updateCertificate(id: string, data: FormData) {
+  await prisma.certificate.update({
+    where: { id },
+    data: {
+      title: data.get("title") as string,
+      issuer: data.get("issuer") as string,
+      date: data.get("date") as string,
+      imageUrl: (data.get("imageUrl") as string) || null,
+      credUrl: (data.get("credUrl") as string) || null,
+    },
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -162,10 +218,12 @@ export async function deleteCertificate(id: string) {
 // Site Settings
 // ========================
 export async function getSiteSettings() {
-  let settings = await prisma.siteSettings.findUnique({ where: { id: "main" } });
+  let settings = await prisma.siteSettings.findUnique({
+    where: { id: "main" },
+  });
   if (!settings) {
     settings = await prisma.siteSettings.create({
-      data: { id: "main" }
+      data: { id: "main" },
     });
   }
   return settings;
@@ -212,7 +270,7 @@ export async function updateSiteSettings(data: FormData) {
 // Chatbot Q&A
 // ========================
 export async function getChatbotQAs() {
-  return await prisma.chatbotQA.findMany({ orderBy: { createdAt: 'desc' } });
+  return await prisma.chatbotQA.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function addChatbotQA(data: FormData) {
@@ -221,12 +279,101 @@ export async function addChatbotQA(data: FormData) {
       question: data.get("question") as string,
       answer: data.get("answer") as string,
       category: (data.get("category") as string) || null,
-    }
+    },
+  });
+  revalidatePath("/admin");
+}
+
+export async function updateChatbotQA(id: string, data: FormData) {
+  await prisma.chatbotQA.update({
+    where: { id },
+    data: {
+      question: data.get("question") as string,
+      answer: data.get("answer") as string,
+      category: (data.get("category") as string) || null,
+    },
   });
   revalidatePath("/admin");
 }
 
 export async function deleteChatbotQA(id: string) {
   await prisma.chatbotQA.delete({ where: { id } });
+  revalidatePath("/admin");
+}
+
+// ========================
+// Reviews (Visitor submissions)
+// ========================
+export async function getReviews() {
+  return await prisma.review.findMany({ orderBy: { createdAt: "desc" } });
+}
+
+export async function getApprovedReviews() {
+  return await prisma.review.findMany({
+    where: { status: "approved" },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function submitReview(data: {
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+}) {
+  await prisma.review.create({
+    data: {
+      name: data.name,
+      role: data.role,
+      content: data.content,
+      rating: data.rating,
+      status: "pending",
+    },
+  });
+  revalidatePath("/admin");
+}
+
+export async function approveReview(id: string) {
+  await prisma.review.update({
+    where: { id },
+    data: { status: "approved" },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+export async function rejectReview(id: string) {
+  await prisma.review.update({
+    where: { id },
+    data: { status: "rejected" },
+  });
+  revalidatePath("/admin");
+}
+
+export async function deleteReview(id: string) {
+  await prisma.review.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+// ========================
+// Contact Messages
+// ========================
+export async function getContactMessages() {
+  return await prisma.contactMessage.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function markMessageRead(id: string) {
+  await prisma.contactMessage.update({
+    where: { id },
+    data: { read: true },
+  });
+  revalidatePath("/admin");
+}
+
+export async function deleteContactMessage(id: string) {
+  await prisma.contactMessage.delete({ where: { id } });
   revalidatePath("/admin");
 }
