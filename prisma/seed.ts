@@ -1,38 +1,35 @@
 import { PrismaClient } from "@prisma/client";
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
+import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
-
-const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
-  }),
-  emailAndPassword: {
-    enabled: true,
-  },
-});
 
 async function main() {
   console.log("🌱 Seeding admin user...");
 
-  // Create admin user via Better Auth signup
-  const res = await auth.api.signUpEmail({
-    body: {
-      name: "Abdul Ahad",
-      email: "abdulahadafridi@gmail.com",
-      password: "admin123456",
+  // Check if admin already exists
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: "abdulahadafridi440@gmail.com",
     },
   });
 
-  if (res) {
+  if (!existingUser) {
+    // Use Better Auth's API to create the user — this properly creates
+    // both the User record and the Account record (with hashed password)
+    await auth.api.signUpEmail({
+      body: {
+        name: "Abdul Ahad",
+        email: "abdulahadafridi440@gmail.com",
+        password: "admin123456",
+      },
+    });
+
     console.log("✅ Admin user created successfully!");
-    console.log("   Email: abdulahadafridi@gmail.com");
-    console.log("   Password: admin123456");
-    console.log("   ⚠️  Change your password after first login!");
+  } else {
+    console.log("⚠️ Admin already exists, skipping creation.");
   }
 
-  // Also ensure SiteSettings exist
+  // Ensure SiteSettings exist
   await prisma.siteSettings.upsert({
     where: { id: "main" },
     update: {},
