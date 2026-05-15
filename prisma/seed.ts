@@ -6,10 +6,17 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding admin user...");
 
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminEmail || !adminPassword) {
+    throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in .env.local");
+  }
+
   // Check if admin already exists
   const existingUser = await prisma.user.findUnique({
     where: {
-      email: "abdulahadafridi440@gmail.com",
+      email: adminEmail,
     },
   });
 
@@ -19,8 +26,8 @@ async function main() {
     await auth.api.signUpEmail({
       body: {
         name: "Abdul Ahad",
-        email: "abdulahadafridi440@gmail.com",
-        password: "admin123456",
+        email: adminEmail,
+        password: adminPassword,
       },
     });
 
