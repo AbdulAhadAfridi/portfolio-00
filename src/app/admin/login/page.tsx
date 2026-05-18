@@ -62,8 +62,7 @@ export default function AdminLoginPage() {
           return;
         }
 
-        router.push("/admin");
-        router.refresh();
+        window.location.href = "/admin";
       } else {
         // Sign in
         const result = await signIn.email({ email, password });
@@ -74,8 +73,7 @@ export default function AdminLoginPage() {
           return;
         }
 
-        router.push("/admin");
-        router.refresh();
+        window.location.href = "/admin";
       }
     } catch {
       setError("Something went wrong. Please try again.");
